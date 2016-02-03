@@ -204,7 +204,9 @@ function photos_page_image($account = FALSE, $fid = NULL) {
           'alt' => 'photos_ajax_del_' . $image->fid
         )
       ));
-      $image->links['cover'] = l(t('Set to Cover'), 'node/' . $image->pid . '/photos/cover/' . $image->fid, array('query' => drupal_get_destination()));
+      $image->links['cover'] = l(t('Set to Cover'), 'node/' . $image->pid . '/photos/cover/' . $image->fid, array(
+        'query' => drupal_get_destination()
+      ));
     }
     if ($vote) {
       $image->links['vote'] = theme('photos_vote', array('fid' => $image->fid));
@@ -222,7 +224,6 @@ function photos_page_image($account = FALSE, $fid = NULL) {
       $v = t('No images have been uploaded yet.');
     }
   }
-  $v .= theme('pager');
 
   return $v;
 }

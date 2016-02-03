@@ -38,7 +38,7 @@ function photos_data_user_slide($account) {
     ->condition('n.uid', $account->uid)
     ->condition('a.count', '0', '>')
     ->orderBy('f.fid', 'DESC')
-    ->limit(500);
+    ->range(0, 500);
   $result = $query->execute();
   $thumb = variable_get('photos_slide_show_thumb', 'thumbnail');
   $view = variable_get('photos_slide_show_view', 'large');
@@ -88,32 +88,29 @@ function photos_data_sub_block_slide($node, $op) {
       $query->join('node', 'n', 'n.nid = p.pid');
       $query->join('users', 'u', 'u.uid = f.uid');
       $query->join('photos_node', 'a', 'a.fid = p.fid');
+      $query->addField('p', 'title', 'image_title');
       $query->fields('f', array('fid', 'uri', 'filemime', 'timestamp', 'filename', 'filesize'))
         ->fields('n', array('title'))
         ->fields('u', array('uid', 'name'))
         ->fields('p', array('pid', 'comcount', 'count'))
         ->condition('a.nid', $node->nid)
         ->orderBy('f.fid', 'DESC')
-        ->limit(3);
+        ->range(0, 4);
       $result = $query->execute();
       $i = 0;
-      foreach ($result as $images) {
-        $image = photos_get_info(0, $images);
+      $pager_image_style = variable_get('photos_pager_imagesize', 'thumbnail');
+      foreach ($result as $image) {
         $t = array();
-        if (is_array($image->thumb)) {
-          foreach ($image->thumb as $key => $thumb) {
-            $t['url'] = _photos_l($thumb);
-            break;
-          }
-        }
-        $t['filename'] = $image->filename;
-        $t['link'] = _photos_l('photos/image/' . $image->fid);
+        $styled_image_url = image_style_url($pager_image_style, $image->uri);
+        $t['url'] = _photos_l($image->uri, $pager_image_style);
+        $t['filename'] = $image->image_title;
+        $t['link'] = url('photos/image/' . $image->fid);
         $array[] = $t;
         ++$i;
       }
       $array['count'] = $i;
   }
-  if ($_GET['type'] != 'xml' && $array['count']) {
+  if ((!isset($_GET['type']) && $array['count']) || (isset($_GET['type']) && $_GET['type'] != 'xml' && $array['count'])) {
     print _photos_json('en', $array);
   }
 }
@@ -137,7 +134,7 @@ function photos_data_album($node) {
     $query->fields('f', array('fid', 'uri', 'filemime', 'timestamp', 'filename', 'filesize'))
       ->condition('p.pid', $node->nid)
       ->orderBy($term['order']['column'], $term['order']['sort'])
-      ->limit($term['limit']);
+      ->range(0, $term['limit']);
     $result = $query->execute();
   }
   else {
@@ -153,7 +150,7 @@ function photos_data_album($node) {
     $query->fields('f', array('fid', 'uri', 'filemime', 'timestamp', 'filename', 'filesize'))
       ->condition('a.nid', $node->nid)
       ->orderBy($term['order']['column'], $term['order']['sort'])
-      ->limit($term['limit']);
+      ->range(0, $term['limit']);
     $result = $query->execute();
   }
   $thumb = variable_get('photos_slide_show_thumb', 0);

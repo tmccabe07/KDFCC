@@ -913,7 +913,7 @@ function photos_editlist_submit($form, &$form_state) {
       if ($key['title'] <> $key['oldtitle']) {
         db_update('photos_image')
           ->fields(array(
-            'title' => check_plain($key['title'])
+            'title' => $key['title']
           ))
           ->condition('fid', $fid)
           ->execute();

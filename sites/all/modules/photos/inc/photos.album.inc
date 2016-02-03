@@ -128,7 +128,6 @@ function photos_album_page($node) {
   _photos_breadcrumb(array(l(t('@name\'s albums', array('@name' => $node->name)), 'photos/user/' . $node->uid . '/album'), l($node_title, 'node/' . $node->nid)));
   $page_title = t('Albums: @title', array('@title' => $node_title));
   drupal_set_title($page_title, PASS_THROUGH);
-  $v .= theme('pager');
 
   return $v;
 }

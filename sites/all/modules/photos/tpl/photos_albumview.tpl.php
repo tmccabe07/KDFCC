@@ -33,14 +33,10 @@
 <?php endif; ?>
 
 <?php print $album['links']; ?>
-<?php if (isset($album['pager'])): ?>
-  <?php print theme_pager($album['pager']); ?>
-<?php endif; ?>
+<?php print theme('pager'); ?>
 <?php
   foreach ($album['view'] as $view) {
     print $view;
   }
 ?>
-<?php if (isset($album['pager'])): ?>
-  <?php print theme_pager($album['pager']); ?>
-<?php endif; ?>
+<?php print theme('pager'); ?>

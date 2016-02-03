@@ -47,12 +47,12 @@
 <p class="photos_block_info">
   <?php print t('This photo also belongs to:'); ?>
 </p>
-  <?php foreach($image->sub_album as $sub_album){ ?>
+  <?php foreach($image->sub_album as $nid => $sub_album){ ?>
     <div class="photos_block_sub">
       <div class="photos_block_sub_title">
-        <div class="photos_block_sub_open" alt="<?php print $sub_album['geturl']; ?>">&nbsp;</div>
+        <div class="photos_block_sub_open" alt="<?php print $sub_album->geturl; ?>">&nbsp;</div>
         <div class="photos_block_sub_name">
-          <a href="<?php print $sub_album['url']; ?>" title="<?php print $sub_album['info']; ?>"><?php print $sub_album['title']; ?></a>
+          <a href="<?php print $sub_album->url; ?>" title="<?php print $sub_album->info; ?>"><?php print $sub_album->title; ?></a>
         </div>
       </div>
       <div class="photos_block_sub_body photos_block_sub_body_load">

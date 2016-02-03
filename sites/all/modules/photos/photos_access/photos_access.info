@@ -3,9 +3,9 @@ description = Advanced photo access and privacy settings.
 core = 7.x
 package = album photos
 
-; Information added by Drupal.org packaging script on 2014-05-29
-version = "7.x-3.0-rc2"
+; Information added by Drupal.org packaging script on 2016-01-18
+version = "7.x-3.0-rc3"
 core = "7.x"
 project = "photos"
-datestamp = "1401368640"
+datestamp = "1453150140"
 

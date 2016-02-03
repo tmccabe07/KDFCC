@@ -1322,14 +1322,17 @@ function photos_block_view($delta = '') {
               ->fields('u', array('uid', 'name'))
               ->condition('a.fid', $image->fid)
               ->orderBy('n.nid', 'DESC')
-              ->limit(10);
+              ->range(0, 10);
             $result = $query->execute();
             foreach ($result as $node) {
               $image->sub_album[$node->nid] = $node;
-              $image->sub_album[$node->nid]['geturl'] = url('photos/data/sub_album/' . $node->nid . '/block_new/json.json');
-              $image->sub_album[$node->nid]['url'] = url('photos/sub_album/' . $node->nid);
-              $image->sub_album[$node->nid]['user'] = $image->name;
-              $image->sub_album[$node->nid]['info'] = t('!name in !time to create', array('!name' => $node['name'], '!time' => format_date($image->timestamp, 'small')));
+              $image->sub_album[$node->nid]->geturl = url('photos/data/sub_album/' . $node->nid . '/block_new/json.json');
+              $image->sub_album[$node->nid]->url = url('photos/sub_album/' . $node->nid);
+              $image->sub_album[$node->nid]->user = $image->name;
+              $image->sub_album[$node->nid]->info = t('!name in !time to create', array(
+                '!name' => $node->name,
+                '!time' => format_date($image->timestamp, 'small')
+              ));
             }
           }
           $block['subject'] = t('Photo information');
@@ -2633,7 +2636,7 @@ function _photos_filter_process($mat) {
               $query->fields('f', array('fid', 'uri', 'filename'))
                 ->condition('p.pid', $album->pid)
                 ->orderBy('f.fid', 'DESC')
-                ->limit($limit);
+                ->range(0, $limit);
               $result = $query->execute();
               foreach ($result as $image) {
                 $set['style_name'] = $style_name;
